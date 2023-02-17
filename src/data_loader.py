@@ -5,11 +5,13 @@ import tensorflow as tf
 
 
 class DataLoader:
-    def __init__(self, path='datasets/', batch_size=12, image_size=512):
+    
+    def __init__(self, path='../datasets/', batch_size=12, image_size=512):
         self.path = path
         self.batch_size = batch_size
         self.image_size = image_size
 
+    
     def read_train_data(self):
         x_files = tf.data.Dataset.list_files(self.path + "train/*.png", shuffle=True)
         y_files = tf.data.Dataset.list_files(self.path + "mask/*.png", shuffle=True)
@@ -45,7 +47,7 @@ class DataLoader:
         return dataset
 
     def read_predict_data(self):
-        file_path = 'datasets/test/pre.png'
+        file_path = '../datasets/test/pre.png'
         image = tf.io.read_file(file_path)
         image_decoded = tf.image.decode_png(image, channels=3)
         image_resized = tf.image.resize(image_decoded, [self.image_size, self.image_size])
@@ -54,10 +56,21 @@ class DataLoader:
         return image_norm
 
     def save_image(self, image):
-        file_path = 'datasets/test/result.png'
+        file_path = '../datasets/test/result.png'
         image = image * 255
 
         encode_image = tf.image.encode_jpeg(image, format='rgb', quality=100)
 
         with open(file_path, 'wb') as fd:
             fd.write(encode_image)
+
+
+# processor = ImageProcessor()
+
+# train_data = processor.read_train_data()
+# predict_data = processor.read_predict_data()
+
+# # Perform training and prediction using the data
+# # ...
+
+# processor.save_image(result_image)
