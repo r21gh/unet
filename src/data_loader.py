@@ -5,7 +5,6 @@ from jax.lib import xla_bridge
 PATH = 'datasets/'
 BATCH_SIZE = 12
 IMAGE_SIZE = 512
-DEVICE = xla_bridge.get_backend().platform
 
 def read_train_data():
     x_files = tf.data.Dataset.list_files(PATH + "train/*.png")
@@ -55,10 +54,10 @@ def read_predict_data():
 
 
 def save_image(image):
-    file_path = 'predict/result.jpg'
+    file_path = 'test/result.png'
     image = image * 255
 
-    encode_image = tf.image.encode_jpeg(image, format='rgb', quality=100)
+    encode_image = tf.image.encode_png(image, format='rgb', quality=100)
 
     with open(file_path, 'wb') as fd:
         fd.write(encode_image)
